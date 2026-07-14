@@ -5,6 +5,7 @@ services:
   redis:
     image: valkey/valkey:alpine
     container_name: redis
+    read_only: true
     hostname: redis
     restart: unless-stopped
     volumes:
