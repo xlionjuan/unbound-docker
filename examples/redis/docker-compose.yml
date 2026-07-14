@@ -3,14 +3,14 @@ volumes:
 
 services:
   redis:
-    image: redis:latest
+    image: valkey/valkey:alpine
     container_name: redis
     hostname: redis
     restart: unless-stopped
     volumes:
       - redis:/data
     healthcheck:
-      test: "[ $$(redis-cli ping) = 'PONG' ]"
+      test: ["CMD", "valkey-cli", "ping"]
       interval: 30s
       timeout: 3s
       retries: 3
