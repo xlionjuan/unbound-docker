@@ -1,15 +1,14 @@
 volumes:
-  redis:
+  valkey:
 
 services:
-  redis:
+  valkey:
     image: valkey/valkey:alpine
-    container_name: redis
+    container_name: valkey
     read_only: true
-    hostname: redis
     restart: unless-stopped
     volumes:
-      - redis:/data
+      - valkey:/data
     healthcheck:
       test: ["CMD", "valkey-cli", "ping"]
       interval: 30s
@@ -30,4 +29,4 @@ services:
       - ./custom.conf.d:/etc/unbound/custom.conf.d:ro
     restart: unless-stopped
     depends_on:
-      - redis
+      - valkey

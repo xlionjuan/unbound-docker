@@ -41,14 +41,14 @@ enable this module, follow this steps:
 
 - Create a `cachedb.conf` under your custom configuration directory `/path/to/config/custom.conf.d`;
 - Add a `server` directive with module configuration to enable `cachedb` module;
-- Add a `cachedb` directive with Redis credentials;
+- Add a `cachedb` directive with Valkey(Redis) credentials;
 
 ```bash
 server:
   module-config: "validator cachedb iterator"
 cachedb:
   backend: "redis"
-  redis-server-host: redis
+  redis-server-host: valkey
   redis-server-port: 6379
   redis-expire-records: yes
 ```
