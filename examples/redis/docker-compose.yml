@@ -7,6 +7,12 @@ services:
     container_name: valkey
     read_only: true
     restart: unless-stopped
+    command: >
+          valkey-server
+          --save 21600 1
+          --maxmemory 128mb
+          --maxmemory-policy allkeys-lru
+          --stop-writes-on-bgsave-error no
     volumes:
       - valkey:/data
     healthcheck:
