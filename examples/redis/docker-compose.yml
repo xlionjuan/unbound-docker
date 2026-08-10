@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
     command: >
           valkey-server
-          --save 21600 1
+          --save 86400 1
           --maxmemory 128mb
           --maxmemory-policy allkeys-lru
           --stop-writes-on-bgsave-error no
