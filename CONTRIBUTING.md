@@ -119,6 +119,12 @@ People _love_ thorough bug reports. I'm not even kidding.
 
 ## Packaging new Unbound releases
 
+> **Automated:** The [`Bump Unbound`](.github/workflows/bump-unbound.yml) workflow runs
+> weekly (and on demand via **Run workflow**). It detects new upstream releases, updates
+> the `ARG` fields below, regenerates the example config, sanity-builds the image, and
+> opens a `Bump Unbound to X.Y.Z` PR for review. The manual steps below are the fallback
+> for out-of-band bumps or when you want to drive it by hand.
+
 1. In your working copy, create a new branch if you haven't already, and update
    the following fields in the [Dockerfile](Dockerfile) with the new version and
    hash.
@@ -144,7 +150,7 @@ People _love_ thorough bug reports. I'm not even kidding.
 For the current pattern, see recent commits touching the Unbound `ARG` lines:
 
 ```bash
-git log --oneline -- Dockerfile | grep -i "update unbound" | head -5
+git log --oneline -- Dockerfile | grep -iE "bump unbound|update unbound" | head -5
 ```
 
 ## Tagging a release (maintainers only)
@@ -152,14 +158,21 @@ git log --oneline -- Dockerfile | grep -i "update unbound" | head -5
 This section applies to repository maintainers. Contributors do not need to tag
 releases — the maintainer will tag once your bump PR is merged.
 
+> **Automated:** When a `bump/unbound-*` PR merges, the
+> [`Tag Unbound release`](.github/workflows/tag-unbound.yml) workflow re-verifies the
+> pinned SHA256 against the upstream tarball and creates the `vX.Y.Z` tag on the content
+> commit automatically (an unsigned annotated tag), which triggers the image publish.
+> The manual, GPG-signed procedure below remains the fallback for releases cut outside
+> that flow.
+
 After an Unbound bump PR is merged to `main`, tag the release on the **content
-commit** (the "Update Unbound to release X.Y.Z" commit), not the merge commit
-GitHub creates on top.
+commit** (the "Bump Unbound to X.Y.Z" commit), not the merge commit GitHub creates
+on top.
 
 ```bash
 git fetch origin
 # Find the content commit on origin/main
-git log origin/main --grep='Update Unbound to release' --format='%H %s' -1
+git log origin/main --grep='Bump Unbound to' --format='%H %s' -1
 
 # Create a signed, annotated tag with the version as the message body
 git tag -s vX.Y.Z -m "vX.Y.Z" <content-commit-sha>
