@@ -34,14 +34,15 @@ docker run --name unbound \
   klutchell/unbound
 ```
 
-### Optional: Enable CacheDB Module with Redis backend
+### Optional: Enable CacheDB Module with Valkey (Redis-compatible) backend
 
 The cache DB module was compiled into daemon, but is disabled by default. To
 enable this module, follow this steps:
 
+- You will need a Redis-protocol-compatible backend (e.g. Redis or Valkey) running and reachable from the Unbound container; see [examples/redis](examples/redis) for a full docker-compose example;
 - Create a `cachedb.conf` under your custom configuration directory `/path/to/config/custom.conf.d`;
 - Add a `server` directive with module configuration to enable `cachedb` module;
-- Add a `cachedb` directive with Valkey(Redis) credentials;
+- Add a `cachedb` directive with Valkey (Redis-compatible) credentials;
 
 ```bash
 server:
